@@ -100,7 +100,7 @@ class StoryMenuState extends MusicBeatState
 			weekThing.targetY = i;
 			grpWeekText.add(weekThing);
 
-			weekThing.x += 750;
+			weekThing.screenCenter(X);
 			weekThing.antialiasing = ClientPrefs.globalAntialiasing;
 			// weekThing.updateHitbox();
 
@@ -141,12 +141,25 @@ class StoryMenuState extends MusicBeatState
 		add(sprDifficultyGroup);
 
 		
-		
+		for (i in 0...CoolUtil.difficultyStuff.length) {
+			var sprDifficulty:FlxSprite = new FlxSprite(leftArrow.x + 60, leftArrow.y).loadGraphic(Paths.image('menudifficulties/' + CoolUtil.difficultyStuff[i][0].toLowerCase()));
+			sprDifficulty.x += (308 - sprDifficulty.width) / 2;
+			sprDifficulty.ID = i;
+			sprDifficulty.antialiasing = ClientPrefs.globalAntialiasing;
+			sprDifficultyGroup.add(sprDifficulty);
+		}
 		changeDifficulty();
 
 		difficultySelectors.add(sprDifficultyGroup);
 
-	
+		rightArrow = new FlxSprite(leftArrow.x + 376, leftArrow.y);
+		rightArrow.frames = ui_tex;
+		rightArrow.animation.addByPrefix('idle', 'arrow right');
+		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
+		rightArrow.animation.play('idle');
+		rightArrow.antialiasing = ClientPrefs.globalAntialiasing;
+		difficultySelectors.add(rightArrow);
+
 		add(bgYellow);
 		add(bgSprite);
 		add(grpWeekCharacters);
@@ -206,9 +219,14 @@ class StoryMenuState extends MusicBeatState
 			}
 
 			if (controls.UI_RIGHT)
-				
+				rightArrow.animation.play('press')
+			else
+				rightArrow.animation.play('idle');
+
 			if (controls.UI_LEFT)
-				
+				leftArrow.animation.play('press');
+			else
+				leftArrow.animation.play('idle');
 
 			if (controls.UI_RIGHT_P)
 				changeDifficulty(1);
@@ -294,15 +312,15 @@ class StoryMenuState extends MusicBeatState
 	{
 		curDifficulty += change;
 
-		if (curDifficulty < 1)
-			curDifficulty = 1;
-		if (curDifficulty >= 1)
-			curDifficulty = 1;
+		if (curDifficulty < 0)
+			curDifficulty = CoolUtil.difficultyStuff.length-1;
+		if (curDifficulty >= CoolUtil.difficultyStuff.length)
+			curDifficulty = 0;
 
 		sprDifficultyGroup.forEach(function(spr:FlxSprite) {
 			spr.visible = false;
 			if(curDifficulty == spr.ID) {
-				spr.visible = false;
+				spr.visible = true;
 				spr.alpha = 0;
 				spr.y = leftArrow.y - 15;
 				FlxTween.tween(spr, {y: leftArrow.y + 15, alpha: 1}, 0.07);
