@@ -13,10 +13,10 @@ class CoolUtil
 {
 	// [Difficulty name, Chart file suffix]
 	public static var difficultyStuff:Array<Dynamic> = [
-		['Normal', ''],
-		['Insane', '-insane']
-    ];
-       
+		['Hard', ''],
+		['Fucked', '-fucked']
+	];
+
 	public static function difficultyString():String
 	{
 		return difficultyStuff[PlayState.storyDifficulty][0].toUpperCase();
