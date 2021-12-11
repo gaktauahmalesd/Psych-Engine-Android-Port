@@ -14,7 +14,7 @@ class CoolUtil
 	// [Difficulty name, Chart file suffix]
 	public static var difficultyStuff:Array<Dynamic> = [
 		['Hard', ''],
-		['Fucked', '-fucked']
+		['Botmode', '-botmode']
 	];
 
 	public static function difficultyString():String
